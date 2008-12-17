@@ -224,11 +224,19 @@ class JabberSimpleTest < Test::Unit::TestCase
 
   def assert_before(seconds, &block)
     error = nil
+
+    # This is for Ruby 1.9.1 compatibility
+    assertion_exception_class = begin
+      MiniTest::Assertion
+    rescue NameError
+      Test::Unit::AssertionFailedError
+    end
+
     begin
-      Timeout::timeout(seconds) {
+      Timeout.timeout(seconds) {
         begin
           yield
-        rescue => e
+        rescue assertion_exception_class => e
           error = e
           sleep 0.5
           retry
