@@ -233,7 +233,7 @@ class JabberSimpleTest < Test::Unit::TestCase
     end
 
     begin
-      Timeout.timeout(seconds) {
+      Timeout::timeout(seconds) {
         begin
           yield
         rescue assertion_exception_class => e
